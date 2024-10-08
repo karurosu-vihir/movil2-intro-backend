@@ -88,6 +88,16 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use('/api',require('./rutas'))
+app.use('/api/cargo',require('./rutas/rutaCargo'))
+app.use('/api/departamento',require('./rutas/rutaDepartamento'))
+app.use('/api/municipio',require('./rutas/rutaMunicipio'))
+app.use('/api/ciudad',require('./rutas/rutaCiudad'))
+app.use('/api/barrio',require('./rutas/rutaBarrio'))
+app.use('/api/direcciones',require('./rutas/rutaClientedireccion'))
+app.use('/api/telefonos',require('./rutas/rutaTelefonos'))
+app.use('/api/usuario',require('./rutas/rutaUsuario'))
+app.use('/api/cliente',require('./rutas/rutaCliente'))
+app.use('/api/empleado',require('./rutas/rutaEmpleado'))
 app.listen(app.get('port'), ()=>{
     console.log(`servidor iniciado en el puerto ${app.get('port')}`)
 });

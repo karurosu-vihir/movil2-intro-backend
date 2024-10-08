@@ -9,7 +9,7 @@ const Usuario = db.define(
             allowNull: false,
         },
         password:{
-            type: sequelize.STRING(50),
+            type: sequelize.STRING(100),
             allowNull: false,
         },
         correo:{
