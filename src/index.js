@@ -1,5 +1,12 @@
-const express = require('express')
-const morgan = require('morgan')
+const express = require('express');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const ratelimit = require('express-rate-limit');
+const cors = require('cors');
+require('dotenv').config();
+
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpec = require('./configuraciones/swagger')
 
 const db = require("./configuraciones/db");
 const modeloCargo = require("./modelos/cargo");
@@ -13,7 +20,6 @@ const modeloCiudad = require('./modelos/direcciones/ciudad')
 const modeloBarrio = require('./modelos/direcciones/barrios')
 const modeloDireccion = require('./modelos/direcciones/clientedireccion')
 const modeloTelefono = require('./modelos/ClienteTelefono')
-
 
 db.authenticate().then(async ()=>{
     console.log("Conexion exitosa con la base de datos");
@@ -82,9 +88,16 @@ db.authenticate().then(async ()=>{
     console.log("Hubo un error con la conexion con la base de datos");
     console.log(error);
 })
+const limitador = ratelimit({
+    windowsMs: 1000 * 60 * 10,
+    max: 100
+})
 const app = express();
 app.set('port',3002)
 app.use(morgan('dev'));
+app.use(helmet());
+app.use(limitador);
+app.use(cors(require('./configuraciones/cors')))
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use('/api',require('./rutas'))
@@ -98,6 +111,7 @@ app.use('/api/telefonos',require('./rutas/rutaTelefonos'))
 app.use('/api/usuario',require('./rutas/rutaUsuario'))
 app.use('/api/cliente',require('./rutas/rutaCliente'))
 app.use('/api/empleado',require('./rutas/rutaEmpleado'))
-app.listen(app.get('port'), ()=>{
-    console.log(`servidor iniciado en el puerto ${app.get('port')}`)
+app.listen(process.env.PORT, ()=>{
+    console.log(`servidor iniciado en el puerto ${process.env.PORT}`)
+    console.log(process.env)
 });

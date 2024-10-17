@@ -2,7 +2,7 @@ const { default: AsyncQueue } = require('sequelize/lib/dialects/mssql/async-queu
 const modeloUsuario = require('../modelos/usuario')
 const { validationResult } = require('express-validator');
 const { where, Op } = require('sequelize');
-const crypt = require('bcrypt')
+// const crypt = require('bcrypt')
 
 exports.inicio = (req, res) => {
     let info = {
